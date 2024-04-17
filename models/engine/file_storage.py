@@ -23,6 +23,7 @@ class FileStorage:
         return class_name
 
     def all(self, cls=None):
+        """Returns a dictionary of models currently in storage"""
         if cls is None:
             return FileStorage.__objects
         else:
@@ -31,16 +32,6 @@ class FileStorage:
                 if isinstance(obj, cls):
                     dict_objects[key] = obj
             return dict_objects
-        """Returns a dictionary of models currently in storage"""
-        """new_dict = {}
-        class_name = self.checkGlobalClass(cls)
-        print(f"now :{class_name}")
-        if cls == None:
-            return FileStorage.__objects
-        for key, value in FileStorage.__objects.items():
-            if class_name in key:
-                new_dict[key] = value
-        return new_dict"""
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
