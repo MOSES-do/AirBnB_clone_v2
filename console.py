@@ -129,7 +129,7 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[_arg[0]]()
         for arg in args_list:
             key, value = arg.split('=')
-            value = value.strip('"').strip('"').\
+            value = value.strip('"').\
                 replace('_', ' ')
             try:
                 if '.' in value:
@@ -208,7 +208,7 @@ class HBNBCommand(cmd.Cmd):
             storage.save()
         except KeyError:
             print("** no instance found **")
-    
+
     def help_destroy(self):
         """ Help information for the destroy command """
         print("Destroys an individual instance of a class")
