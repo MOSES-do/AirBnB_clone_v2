@@ -23,22 +23,24 @@ class FileStorage:
         return class_name
 
     def all(self, cls=None):
+        if cls is None:
+            return FileStorage.__objects
+        else:
+            dict_objects = {}
+            for key, obj in FileStorage.__objects.items():
+                if isinstance(obj, cls):
+                    dict_objects[key] = obj
+            return dict_objects
         """Returns a dictionary of models currently in storage"""
-        with open(self.__file_path, "r") as f:
-            json_str = json.load(f)
-            class_name = self.checkGlobalClass(cls)
-            for key, value in json_str.items():
-                id_cls = value.get('__class__')
-                if id_cls == class_name:
-                    cls = globals()[id_cls]
-                    py = cls(**value)
-                    FileStorage.__objects[key] = py
-                    all_objs = FileStorage.__objects[key]
-            new_dict = {}
-            for key, value in FileStorage.__objects.items():
-                if class_name in key:
-                    new_dict[key] = value
-        return new_dict
+        """new_dict = {}
+        class_name = self.checkGlobalClass(cls)
+        print(f"now :{class_name}")
+        if cls == None:
+            return FileStorage.__objects
+        for key, value in FileStorage.__objects.items():
+            if class_name in key:
+                new_dict[key] = value
+        return new_dict"""
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
