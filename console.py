@@ -2,9 +2,6 @@
 """ Console Module """
 import cmd
 import sys
-import re
-import os
-import json
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -139,9 +136,9 @@ class HBNBCommand(cmd.Cmd):
             except ValueError:
                 pass
             setattr(new_instance, key, value)
-        storage.new(new_instance)
+        storage.save()
         print(new_instance.id)
-        new_instance.save()
+        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -246,7 +243,7 @@ class HBNBCommand(cmd.Cmd):
         print(count)
 
     def help_count(self):
-        """ """
+        """ Count available classes  """
         print("Usage: count <class_name>")
 
     def do_update(self, args):
