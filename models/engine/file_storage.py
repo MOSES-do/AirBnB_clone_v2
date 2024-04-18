@@ -16,12 +16,6 @@ class FileStorage:
     __file_path = 'file.json'
     __objects = {}
 
-    def checkGlobalClass(self, cls):
-        """returns the '__class__' value of object"""
-        str_cls = f"{cls}"
-        class_name = str_cls.split('.')[-1].strip(">'")
-        return class_name
-
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
         if cls is None:
@@ -35,8 +29,12 @@ class FileStorage:
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
-        key = f"{obj.__class__.__name__}.{obj.id}"
-        FileStorage.__objects[key] = obj
+        self.all().update(
+                {obj.to_dict()['__class__'] +
+                    '.' + obj.id: obj}
+            )
+        """key = f"{obj.__class__.__name__}.{obj.id}"
+        FileStorage.__objects[key] = obj"""
 
     def save(self):
         """Saves storage dictionary to file"""
