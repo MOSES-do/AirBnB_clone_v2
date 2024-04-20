@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import os
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -10,6 +11,9 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+
+
+HBNB_TYPE_STORAGE = os.environ.get('HBNB_TYPE_STORAGE')
 
 
 class HBNBCommand(cmd.Cmd):
@@ -136,7 +140,7 @@ class HBNBCommand(cmd.Cmd):
             except ValueError:
                 pass
             setattr(new_instance, key, value)
-        storage.save()
+        storage.new(new_instance)
         print(new_instance.id)
         storage.save()
 
@@ -214,7 +218,18 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
         print_list = []
+        """
+        if HBNB_TYPE_STORAGE == 'db':
+            print(storage)
+            print(storage._DBStorage__session)
+            session = storage._DBStorage__session
+            table = session.query(args).all()
+            print(table)
 
+        else:
+            print(storage)
+            print(storage._FileStorage__objects.items())
+        """
         if args:
             args = args.split(' ')[0]  # remove possible trailing args
             if args not in HBNBCommand.classes:
@@ -228,6 +243,11 @@ class HBNBCommand(cmd.Cmd):
                 print_list.append(str(v))
 
         print(print_list)
+
+    def remove_sa_instance_state(self, dictionary):
+        return {key: value for key, value in dictionary.items()
+                if key != '_sa_instance_state'
+                }
 
     def help_all(self):
         """ Help information for the all command """

@@ -8,7 +8,7 @@ from sqlalchemy.orm import declarative_base
 
 
 Base = declarative_base()
-class BaseModel(Base):
+class BaseModel():
     """A base class for all hbnb models"""
     __abstract__ = True
 
@@ -50,9 +50,10 @@ class BaseModel(Base):
     def to_dict(self):
         """Convert instance into dict format"""
         dictionary = {}
+        dictionary.update(self.__dict__)
         if '_sa_instance_state' in self.__dict__:
             del self.__dict__['_sa_instance_state']
-        dictionary = self.__dict__.copy()
+            dictionary = self.__dict__.copy()    
         dictionary["__class__"] = self.__class__.__name__
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
