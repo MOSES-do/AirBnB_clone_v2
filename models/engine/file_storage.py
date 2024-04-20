@@ -6,6 +6,10 @@ import json
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
     __file_path = 'file.json'
+    """costantly adds to its dict all instances created
+        through out the programme, allowing us to use its
+        content as data to be saved to a file, updating and deleting
+        to the specified file"""
     __objects = {}
 
     def all(self, cls=None):
@@ -20,12 +24,10 @@ class FileStorage:
             return dict_objects
 
     def new(self, obj):
-        """Adds new object to storage dictionary"""
+        """Adds new object to storage dictionary
+        key = f"{obj.__class__.__name__}.{obj.id}"
+        FileStorage.__objects[key] = obj"""
         self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
-        """self.all().update(
-                {obj.to_dict()['__class__'] +
-                    '.' + obj.id: obj}
-            )"""
 
     def save(self):
         """Saves storage dictionary to file"""
@@ -34,7 +36,7 @@ class FileStorage:
             temp.update(FileStorage.__objects)
             for key, val in temp.items():
                 temp[key] = val.to_dict()
-            json.dump(temp, f)
+            json.dump(temp, f, indent=4)
 
     def delete(self, obj=None):
         """delete object from objects if inside"""
@@ -42,11 +44,15 @@ class FileStorage:
         if obj is None:
             pass
         else:
+            """create list of keys in storage
+                to be compared against the received instance
+                key"""
             for key in FileStorage.__objects.keys():
                 if obj.id in key:
                     key_value = obj.id
                     break
             if key_value:
+                """when found del instance"""
                 del FileStorage.__objects[key]
             self.save()
 
