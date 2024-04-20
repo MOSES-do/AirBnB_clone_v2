@@ -8,11 +8,10 @@ from sqlalchemy import String, Integer, Column
 
 class State(BaseModel):
     """ State class """
-    __tablename__ = "states"
-
     name = ""
-
-    cities = Relationship("City", passive_deletes=True, back_populates="state")
+    
+    __tablename__ = "states"
+    cities = Relationship("City", passive_deletes=True, backref="state")
     name = Column(String(128), nullable=False)
 
     def cities(self):
