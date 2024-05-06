@@ -89,3 +89,5 @@ sudo nginx -t
 
 # If the configuration test is successful, reload Nginx to apply the changes
 sudo service nginx restart
+
+exit 0
