@@ -39,7 +39,7 @@ done
 if [ -d "/data/web_static/releases/test/" ]; then
         if [ ! -f "$test_file" ]; then
                 touch "$test_dir/$test_file"
- echo "My first web server upload" > "$test_dir/$test_file"
+             echo "My first web server upload" > "$test_dir/$test_file"
         fi
 fi
 # set ownership tp current user/group
@@ -47,12 +47,12 @@ sudo chown -R "$USER:$USER" /data
 
 # check if symbolic link exists, if yes, delete and recreate it
 sym_link="/data/web_static/current"
+hbnb_link="/data/web_static/hbnb_static"
 target_path="/data/web_static/releases/test"
 if [ -L "$sym_link" ]; then
         sudo rm "$sym_link"
 fi
 sudo ln -s "$target_path" "$sym_link"
-
 
 nginx_conf="/etc/nginx/sites-available/default"
 new_root="root /data/web_static/current/;"
@@ -69,6 +69,14 @@ if [ -L "$sym_link1" ]; then
         sudo rm "$sym_link1"
 fi
 sudo ln -s "$target_path1" "$sym_link1"
+
+redirect_path="/hbnb_static"
+path="alias /data/web_static/current"
+sudo sed -i "/add_header X-Served-By \$HOSTNAME;/a\\
+\\tlocation $redirect_path {\\
+\\t\\t$path;\\
+\\t}\\
+" "$nginx_conf"
 
 sudo nginx -t
 
