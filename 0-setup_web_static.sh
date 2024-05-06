@@ -39,9 +39,19 @@ done
 if [ -d "/data/web_static/releases/test/" ]; then
         if [ ! -f "$test_file" ]; then
                 touch "$test_dir/$test_file"
-             echo "My first web server upload" > "$test_dir/$test_file"
+echo "
+<html>
+  <head>
+  </head>
+  <body>
+    Holberton School
+  </body>
+</html>
+" > "$test_dir/$test_file"
         fi
 fi
+
+
 # set ownership tp current user/group
 sudo chown -R "$USER:$USER" /data
 
