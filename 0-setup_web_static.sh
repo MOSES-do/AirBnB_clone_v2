@@ -4,7 +4,7 @@
 # verifying installation of program "nginx"  else install
 prog_name="nginx"
 
-if which "$prog_name" >/dev/null; then
+if command -v "$prog_name" >/dev/null; then
        :
 else
        sudo apt update
@@ -54,7 +54,6 @@ sudo chown -R "$USER:$USER" /data
 
 # check if symbolic link exists, if yes, delete and recreate it
 sym_link="/data/web_static/current"
-hbnb_link="/data/web_static/hbnb_static"
 target_path="/data/web_static/releases/test"
 if [ -L "$sym_link" ]; then
         sudo rm "$sym_link"
