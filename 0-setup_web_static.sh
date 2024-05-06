@@ -28,7 +28,6 @@ test_file="index.html"
 list_dir=("$root_folder" "$web_static" "$releases" "$shared" "$test_dir")
 
 for directory in "${list_dir[@]}"; do
-        echo "$directory"
         if [ ! -d "$directory" ]; then
                 sudo mkdir -p "$directory"
         else
@@ -39,15 +38,13 @@ done
 if [ -d "/data/web_static/releases/test/" ]; then
         if [ ! -f "$test_file" ]; then
                 touch "$test_dir/$test_file"
-echo "
-<html>
+echo "<html>
   <head>
   </head>
   <body>
     Holberton School
   </body>
-</html>
-" > "$test_dir/$test_file"
+</html>" > "$test_dir/$test_file"
         fi
 fi
 
