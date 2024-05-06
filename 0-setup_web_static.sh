@@ -51,6 +51,7 @@ fi
 
 # set ownership tp current user/group
 sudo chown -R "$USER:$USER" /data
+sudo chmod 755 /data/web_static/releases/test/index.html
 
 # check if symbolic link exists, if yes, delete and recreate it
 sym_link="/data/web_static/current"
