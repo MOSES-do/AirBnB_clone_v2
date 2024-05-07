@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-from fabric.api import env, task, sudo, put
+from fabric.api import env, sudo, put
 import os
 from datetime import datetime
 env.user = 'ubuntu'
@@ -8,7 +8,6 @@ env.hosts = ['100.25.143.79', '100.25.222.39']
 """using fabric to distribute files to web servers"""
 
 
-@task
 def do_deploy(archive_path):
     """using fabric to distribute files"""
     if not os.path.exists(archive_path):
