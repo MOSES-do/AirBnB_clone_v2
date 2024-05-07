@@ -4,7 +4,6 @@ import os
 import sys
 from datetime import datetime
 
-
 """using fabric generate a .tgz archive of the web_static folder"""
 
 
@@ -13,6 +12,7 @@ def do_deploy(archive_path):
     """fab function"""
     if not os.path.exists(archive_path):
         return False
+    env.user = 'ubuntu'
     env.hosts = ['100.25.143.79', '100.25.222.39']
     for env.host_string in env.hosts:
         try:
