@@ -29,11 +29,14 @@ def do_deploy(archive_path):
             f"-C /data/web_static/releases/{release_folder} "
             f"--no-same-owner "
             )
+
         """Delete archive_path from /tmp/"""
         sudo(f"rm /tmp/{web_tgz}")
 
+        sudo(f"rm -rf /data/web_static/releases/web_tgz/web_static")
+
         """Delete symbolic link at /data/web_static/current"""
-        sudo(f"rm -f /data/web_static/current")
+        sudo(f"rm -rf /data/web_static/current")
 
         """create new symbolic link /data/web_static/current"""
         sudo(
