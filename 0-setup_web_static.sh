@@ -16,6 +16,11 @@ else
        sudo service nginx restart
 fi
 
+# Allow incoming connections through SSH, port 80, and 443
+sudo ufw allow 'OpenSSH'
+sudo ufw allow 'Nginx HTTP'
+sudo ufw allow 'Nginx HTTPS'
+
 # create folder/file structure if it doesn't already exist
 root_folder="/data"
 web_static="$root_folder/web_static"
@@ -36,8 +41,8 @@ for directory in "${list_dir[@]}"; do
 done
 
 # set ownership tp current user/group
-sudo chown -R "$USER:$USER" /data
-sudo chmod -R 755 /data/web_static/releases/test
+sudo chown -R "$USER:$USER" /data/
+sudo chmod -R 755 /data/web_static/releases/test/
 
 if [ -d "/data/web_static/releases/test/" ]; then
         if [ ! -f "$test_file" ]; then
@@ -63,7 +68,9 @@ sudo ln -s "$target_path" "$sym_link"
 nginx_conf="/etc/nginx/sites-available/default"
 new_root="root /data/web_static/current/;"
 my_new_server="server_name aceme.tech www.aceme.tech;"
+
 # replacements using sed -i
+# serve content of data using /data/web_static/current
 sudo sed -i "s#server_name _;#$my_new_server#" "$nginx_conf"
 sudo sed -i "s#root /var/www/html;#$new_root#" "$nginx_conf"
 
