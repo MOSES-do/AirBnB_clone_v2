@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-from fabric.api import run, env, local, task, sudo, put
+from fabric.api import env, task, sudo, put
 import os
 from datetime import datetime
 env.user = 'ubuntu'
@@ -43,6 +43,5 @@ def do_deploy(archive_path):
             )
         print('New version deployed!')
     except Exception as e:
-        print(f"Error: {e}")
         return False
     return True
