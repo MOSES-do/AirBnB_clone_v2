@@ -33,8 +33,6 @@ def do_deploy(archive_path):
         """Delete archive_path from /tmp/"""
         sudo(f"rm /tmp/{web_tgz}")
 
-        sudo(f"rm -rf /data/web_static/releases/web_tgz/web_static")
-
         """Delete symbolic link at /data/web_static/current"""
         sudo(f"rm -rf /data/web_static/current")
 
