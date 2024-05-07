@@ -35,6 +35,10 @@ for directory in "${list_dir[@]}"; do
         fi
 done
 
+# set ownership tp current user/group
+sudo chown -R "$USER:$USER" /data
+sudo chmod -R 755 /data/web_static/releases/test
+
 if [ -d "/data/web_static/releases/test/" ]; then
         if [ ! -f "$test_file" ]; then
                 touch "$test_dir/$test_file"
@@ -47,11 +51,6 @@ echo "<html>
 </html>" > "$test_dir/$test_file"
         fi
 fi
-
-
-# set ownership tp current user/group
-sudo chown -R "$USER:$USER" /data
-sudo chmod 755 /data/web_static/releases/test/index.html
 
 # check if symbolic link exists, if yes, delete and recreate it
 sym_link="/data/web_static/current"
@@ -89,5 +88,3 @@ sudo nginx -t
 
 # If the configuration test is successful, reload Nginx to apply the changes
 sudo service nginx restart
-
-exit 0
