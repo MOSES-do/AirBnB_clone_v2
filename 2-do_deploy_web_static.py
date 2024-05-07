@@ -1,17 +1,16 @@
 #!/usr/bin/python3
 from fabric.api import run, env, local, task, sudo, put
 import os
-import sys
 from datetime import datetime
 env.user = 'ubuntu'
 env.hosts = ['100.25.143.79', '100.25.222.39']
 
-"""using fabric generate a .tgz archive of the web_static folder"""
+"""using fabric to distribute files to web servers"""
 
 
 @task
 def do_deploy(archive_path):
-    """fab function"""
+    """using fabric to distribute files"""
     if not os.path.exists(archive_path):
         return False
     """for env.host_string in env.hosts:"""
@@ -47,6 +46,3 @@ def do_deploy(archive_path):
         print(f"Error: {e}")
         return False
     return True
-
-
-do_deploy(sys.argv[3])
