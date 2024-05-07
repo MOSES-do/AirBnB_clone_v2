@@ -18,9 +18,9 @@ fi
 
 
 # Allow incoming connections through SSH, port 80, and 443
-sudo ufw allow 'OpenSSH'
-sudo ufw allow 'Nginx HTTP'
-sudo ufw allow 'Nginx HTTPS'
+#sudo ufw allow 'OpenSSH'
+#sudo ufw allow 'Nginx HTTP'
+#sudo ufw allow 'Nginx HTTPS'
 
 # create folder/file structure if it doesn't already exist
 root_folder="/data"
@@ -76,7 +76,7 @@ sudo sed -i "s#root /var/www/html;#$new_root#" "$nginx_conf"
 
 redirect_path="/hbnb_static"
 path="alias /data/web_static/current"
-sudo sed -i "/add_header X-Served-By \$HOSTNAME;/a\\
+sudo sed -i "/listen 80 default_server/a\\
 \\tlocation $redirect_path {\\
 \\t\\t$path;\\
 \\t}\\
