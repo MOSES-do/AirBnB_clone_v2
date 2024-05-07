@@ -1,51 +1,36 @@
 #!/usr/bin/python3
-from fabric.api import env, sudo, put
+"""
+    Fabric script that distributes an archive to my web servers
+"""
+from fabric.api import *
+from fabric.operations import run, put, sudo
 import os
-from datetime import datetime
 env.user = 'ubuntu'
 env.hosts = ['100.25.143.79', '100.25.222.39']
 
-"""using fabric to distribute files to web servers"""
-
 
 def do_deploy(archive_path):
-    """using fabric to distribute files"""
-    if not os.path.exists(archive_path):
+    """
+        using fabric to distribute archive
+    """
+    if os.path.isfile(archive_path) is False:
         return False
-    """for env.host_string in env.hosts:"""
     try:
-        """upload archive to /tmp/ directory on the server"""
-        put(archive_path, '/tmp/')
-
-        """remove the '.' extension part of the archive name"""
-        release_folder = archive_path.split('.')[0]
-        """remove the 'versions/' from archive_path"""
-        web_tgz = archive_path.split('/')[-1]
-
-        sudo(f"mkdir -p /data/web_static/releases/{release_folder}")
-        """Extract archive to the folder /data/web_static/releases"""
-        sudo(
-            f"tar -xzf /tmp/{web_tgz} "
-            f"-C /data/web_static/releases/{release_folder} "
-            f"--no-same-owner "
-            )
-
-        """Delete archive_path from /tmp/"""
-        sudo(f"rm /tmp/{web_tgz}")
-
-        sudo(f"rm -rf /data/web_static/releases/web_tgz/web_static")
-
-        """Delete symbolic link at /data/web_static/current"""
-        sudo(f"rm -rf /data/web_static/current")
-
-        """create new symbolic link /data/web_static/current"""
-        sudo(
-            f"ln -sf /data/web_static/releases/{release_folder} "
-            f"/data/web_static/current "
-            )
-        sudo(f"chown -R ubuntu:ubuntu /data/")
-        sudo(f"chown -R 755 /data/web_static/current/*")
-        print('New version deployed!')
+        archive = archive_path.split("/")[-1]
+        path = "/data/web_static/releases"
+        put("{}".format(archive_path), "/tmp/{}".format(archive))
+        folder = archive.split(".")
+        run("mkdir -p {}/{}/".format(path, folder[0]))
+        new_archive = '.'.join(folder)
+        run("tar -xzf /tmp/{} -C {}/{}/"
+            .format(new_archive, path, folder[0]))
+        run("rm /tmp/{}".format(archive))
+        run("mv {}/{}/web_static/* {}/{}/"
+            .format(path, folder[0], path, folder[0]))
+        run("rm -rf {}/{}/web_static".format(path, folder[0]))
+        run("rm -rf /data/web_static/current")
+        run("ln -sf {}/{} /data/web_static/current"
+            .format(path, folder[0]))
         return True
-    except Exception as e:
+    except:
         return False
