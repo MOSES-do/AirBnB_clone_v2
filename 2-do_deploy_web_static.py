@@ -40,7 +40,8 @@ def do_deploy(archive_path):
             f"ln -sf /data/web_static/releases/{release_folder} "
             f"/data/web_static/current "
             )
-        sudo(f"chown -R ubuntu:ubuntu /data")
+	# Recursively assign ownership of data to user running script.
+        sudo(f"chown -R ubuntu:ubuntu /data/")
         print('New version deployed!')
         return True
     except:
