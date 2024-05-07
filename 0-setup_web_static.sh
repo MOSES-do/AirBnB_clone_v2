@@ -63,7 +63,7 @@ target_path="/data/web_static/releases/test"
 if [ -L "$sym_link" ]; then
         sudo rm "$sym_link"
 fi
-sudo ln -s "$target_path" "$sym_link"
+sudo ln -sf "$target_path" "$sym_link"
 
 nginx_conf="/etc/nginx/sites-available/default"
 new_root="root /data/web_static/current/;"
@@ -77,14 +77,6 @@ sudo sed -i "s#root /var/www/html;#$new_root#" "$nginx_conf"
 # set ownership tp current user/group
 sudo chown -R "$USER:$USER" /data
 
-# recreate symlink for sites-enabled to update using sites-available
-sym_link1="/etc/nginx/sites-enabled/default"
-target_path1="/etc/nginx/sites-available/default"
-if [ -L "$sym_link1" ]; then
-        sudo rm "$sym_link1"
-fi
-sudo ln -s "$target_path1" "$sym_link1"
-
 redirect_path="/hbnb_static"
 path="alias /data/web_static/current"
 sudo sed -i "/add_header X-Served-By \$HOSTNAME;/a\\
@@ -92,6 +84,14 @@ sudo sed -i "/add_header X-Served-By \$HOSTNAME;/a\\
 \\t\\t$path;\\
 \\t}\\
 " "$nginx_conf"
+
+# recreate symlink for sites-enabled to update using sites-available
+sym_link1="/etc/nginx/sites-enabled/default"
+target_path1="/etc/nginx/sites-available/default"
+if [ -L "$sym_link1" ]; then
+        sudo rm "$sym_link1"
+fi
+sudo ln -sf "$target_path1" "$sym_link1"
 
 sudo nginx -t
 
