@@ -16,6 +16,7 @@ else
        sudo service nginx restart
 fi
 
+
 # Allow incoming connections through SSH, port 80, and 443
 sudo ufw allow 'OpenSSH'
 sudo ufw allow 'Nginx HTTP'
@@ -41,7 +42,9 @@ for directory in "${list_dir[@]}"; do
 done
 
 # set ownership tp current user/group
-sudo chown -R "$USER:$USER" /data/
+sudo chown -R "$USER:$USER" /data
+
+# set permissions of files in /data to rwx for user, r-x for g:0
 sudo chmod -R 755 /data/web_static/releases/test/
 
 if [ -d "/data/web_static/releases/test/" ]; then
@@ -70,12 +73,9 @@ new_root="root /data/web_static/current/;"
 my_new_server="server_name aceme.tech www.aceme.tech;"
 
 # replacements using sed -i
-# serve content of data using /data/web_static/current
+# serve content to hbnb_static using /data/web_static/current
 sudo sed -i "s#server_name _;#$my_new_server#" "$nginx_conf"
 sudo sed -i "s#root /var/www/html;#$new_root#" "$nginx_conf"
-
-# set ownership tp current user/group
-sudo chown -R "$USER:$USER" /data
 
 redirect_path="/hbnb_static"
 path="alias /data/web_static/current"
