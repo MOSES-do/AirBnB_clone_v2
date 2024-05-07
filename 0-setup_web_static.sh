@@ -67,6 +67,8 @@ my_new_server="server_name aceme.tech www.aceme.tech;"
 sudo sed -i "s#server_name _;#$my_new_server#" "$nginx_conf"
 sudo sed -i "s#root /var/www/html;#$new_root#" "$nginx_conf"
 
+# set ownership tp current user/group
+sudo chown -R "$USER:$USER" /data
 
 # recreate symlink for sites-enabled to update using sites-available
 sym_link1="/etc/nginx/sites-enabled/default"
