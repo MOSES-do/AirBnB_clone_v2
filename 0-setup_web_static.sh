@@ -18,9 +18,9 @@ fi
 
 
 # Allow incoming connections through SSH, port 80, and 443
-#sudo ufw allow 'OpenSSH'
-#sudo ufw allow 'Nginx HTTP'
-#sudo ufw allow 'Nginx HTTPS'
+sudo ufw allow 'OpenSSH'
+sudo ufw allow 'Nginx HTTP'
+sudo ufw allow 'Nginx HTTPS'
 
 # create folder/file structure if it doesn't already exist
 root_folder="/data"
