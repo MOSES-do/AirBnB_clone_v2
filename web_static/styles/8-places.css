@@ -1,0 +1,219 @@
+.places {
+    /* display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(3, 1fr); */
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+    width: 100%;
+    flex-wrap: wrap;
+    margin: 0px;
+    padding: 0px;
+}
+
+.places h1 {
+    font-size: 30px;
+}
+
+.places article {
+    min-width: 390px;
+    padding: 10px;
+    margin: 10px;
+    border: 1px #FF5A5F solid;
+    border-radius: 4px;
+}
+
+@media only screen and (max-width:449px) {
+    .places article {
+        min-width: 320px;
+    }
+}
+
+@media only screen and (max-width:359px) {
+    .places article {
+        min-width: 280px;
+    }
+}
+
+@media only screen and (max-width:315px) {
+    .places article {
+        min-width: 250px;
+    }
+}
+
+.places article h2 {
+    font-size: 30px;
+    text-align: center;
+}
+
+
+section.places>*:nth-child(1) {
+    flex-basis: 100%;
+}
+
+.places>*:nth-child(2) {
+    flex-basis: 45%;
+}
+
+.places>*:nth-child(3) {
+    flex-basis: 45%;
+}
+
+.places>*:nth-child(4) {
+    flex-basis: 45%;
+}
+
+article h2 {
+    margin: 0px;
+    padding: 0px;
+}
+
+article .price-row {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+
+article .price_by_night {
+    color: #FF5A5F;
+    border: 3px #FF5A5F solid;
+    border-radius: 50%;
+    height: 60px;
+    font-size: 30px;
+    min-width: 60px;
+
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+article .information {
+    height: 80px;
+    width: 100%;
+    border-top: 1px#DDDDDD solid;
+    border-bottom: 1px#DDDDDD solid;
+    padding-bottom: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    display: flex;
+    justify-content: space-around;
+}
+
+@media only screen and (max-width:449px) {
+    article .information>div:not(:first-child) {
+        margin-left: -30px;
+    }
+}
+
+
+article .information figcaption {
+    display: flex;
+    gap: 1px;
+}
+
+@media only screen and (max-width:315px) {
+    article .information figcaption {
+        width: 10px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+
+article figure {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+article figure .icon_group {
+    background-image: url("../images/icon_group.png");
+    background-repeat: no-repeat;
+    height: 50px;
+    width: 50px;
+}
+
+article figure .icon_bath {
+    background-image: url("../images/icon_bath.png");
+    background-repeat: no-repeat;
+    height: 50px;
+    width: 50px;
+}
+
+article figure .icon_bed {
+    background-image: url("../images/icon_bed.png");
+    background-repeat: no-repeat;
+    height: 50px;
+    width: 50px;
+}
+
+/* .amenities span .icon_tv {
+    background-image: url("../images/icon_tv.png");
+    background-repeat: no-repeat;
+    /* height: 40px;
+    width: 40px; */
+/* font-size: 20px; */
+}
+
+.amenities span .icon_wifi {
+    background-image: url("../images/icon_wifi.png");
+    background-repeat: no-repeat;
+    height: 40%;
+    width: 40%;
+}
+
+.amenities span .icon_pets {
+    background-image: url("../images/icon_pets.png");
+    background-repeat: no-repeat;
+    height: 40px;
+    width: 40px;
+}
+
+article .amenities {
+    width: 100%;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    font-size: 16px;
+}
+
+article .amenities h2,
+article .reviews h2 {
+    text-align: left;
+    font-size: inherit;
+    border-bottom: 1px #DDDDDD solid;
+    padding-bottom: 10px;
+}
+
+article .amenities ul {
+    width: 40%;
+    margin-top: 15px;
+}
+
+article .amenities span img {
+    width: 15%;
+}
+
+article .amenities span {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+article .reviews ul li h3 {
+    margin: 0px;
+    font-size: inherit;
+    margin-top: 10px
+}
+
+article .reviews ul li p {
+    margin: 0px;
+    margin-bottom: 10px;
+}
