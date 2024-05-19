@@ -4,12 +4,14 @@ from models.base_model import BaseModel
 from models.base_model import Base
 from sqlalchemy.orm import relationship
 from sqlalchemy import String, Integer, Column
+from models.city import City
+import models
 
 
 class State(BaseModel, Base):
     """ State class """
     name = ""
-    
+
     __tablename__ = "states"
     """
     passive_del=true means when a child entity in a relationship btw
@@ -20,16 +22,18 @@ class State(BaseModel, Base):
     """
     """
     Relationship(City) - defines relationship btw State and city entity
-    such that State will have a collection of cities. 
+    such that State will have a collection of cities.
     A one to many relationship
     """
     cities = relationship("City", passive_deletes=True, backref="state")
     name = Column(String(128), nullable=False)
 
+    @property
     def cities(self):
         """getter attribute"""
         city_list = []
-        for key, value in cities.items():
-            state_id = value.get('state_id')
-            if state_id == State.id:
-                city_list = cities
+        all_cities = models.storage.all(City)
+        for city in all_cities.values():
+            if city.state_id == self.id:
+                city_list.append(city)
+        return city_list

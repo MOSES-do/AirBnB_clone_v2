@@ -56,30 +56,31 @@ class DBStorage:
             print(f"An error occured while dropping tables: {str(e)}")
 
     def all(self, cls=None):
-        if cls is None:
-            table_dict = {}
-            metadata = MetaData()
-            metadata.reflect(bind=self.__engine)
-
-            for table_name in metadata.tables.keys():
-                table = Table(
-                    table_name, metadata, autoload_with=self.__engine
-                )
-                query = table.select()
-
-                result.extend(self.__engine.execute(query).fetchall())
-                print(f"Table: {table_name}")
-                return result
-                for row in result:
-                    print(row)
+        """query current database session (self_session
+            for objects with the class_name in cls
+            Return a dictionary of objects
+        """
+        obj_dict = {}
+        if cls:
+            if isinstance(cls, str):
+                """returns the object"""
+                cls = eval(cls)
+            query = self.__session.query(cls).all()
+            for obj in query:
+                key = obj.__class__.__name__ + "." + obj.id
+                obj_dict[key] = obj
         else:
-            session = self.__session
-            cls_orm = eval(args)
-            table = session.query(cls_orm).all()
-            for user in table:
-                print(f"[{user}]")
-            """cls_obj = session.query(cls).all()
-            return cls_obj"""
+            for cls in Base.__subclasses__():
+                """query all subclasses of base
+                    to return instances of all classes
+                     from database in for a list
+                """
+                query = self.__session.query(cls).all()
+                for obj in query:
+                    """construct each object into a dictionary"""
+                    key = obj.__class__.__name__ + "." + obj.id
+                    obj_dict[key] = obj
+        return obj_dict
 
     def new(self, obj):
         session = self.__session()
@@ -95,6 +96,12 @@ class DBStorage:
             session = self.__session()
             session.delete(obj)
             session.commit()
+
+    def close(self):
+        """
+        call remove() on the private session attr
+        """
+        self.__session.remove()
 
     def reload(self):
         Base.metadata.create_all(self.__engine)

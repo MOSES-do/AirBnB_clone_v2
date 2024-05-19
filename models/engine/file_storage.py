@@ -25,9 +25,6 @@ class FileStorage:
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
-        """key = f"{obj.__class__.__name__}.{obj.id}"
-        FileStorage.__objects[key] = obj"""
-        print(obj)
         self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
 
     def save(self):
@@ -56,6 +53,11 @@ class FileStorage:
                 """when found del instance"""
                 del FileStorage.__objects[key]
             self.save()
+
+    def close(self):
+        """call reload() method for deserializing
+        JSON file to objects """
+        self.reload()
 
     def reload(self):
         """Loads storage dictionary from file"""
