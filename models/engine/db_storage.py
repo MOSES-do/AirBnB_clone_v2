@@ -6,15 +6,17 @@ from models.base_model import Base
 from models.city import City
 from models.state import State
 from models.user import User
+from models.place import Place
+from models.review import Review
 import os
 
-
-HBNB_MYSQL_USER = os.environ.get('HBNB_MYSQL_USER', 'hbnb_dev')
-HBNB_MYSQL_PWD = os.environ.get('HBNB_MYSQL_PWD', 'hbnb_dev_pwd')
+HBNB_MYSQL_USER = os.environ.get('HBNB_MYSQL_USER')
+HBNB_MYSQL_PWD = os.environ.get('HBNB_MYSQL_PWD')
 HBNB_MYSQL_HOST = os.environ.get('HBNB_MYSQL_HOST', 'localhost')
-HBNB_MYSQL_DB = os.environ.get('HBNB_MYSQL_DB', 'hbnb_dev_db')
-HBNB_TYPE_STORAGE = os.environ.get('HBNB_TYPE_STORAGE', 'db')
+HBNB_MYSQL_DB = os.environ.get('HBNB_MYSQL_DB')
+HBNB_TYPE_STORAGE = os.environ.get('HBNB_TYPE_STORAGE')
 HBNB_ENV = os.environ.get('HBNB_ENV')
+
 
 engine = create_engine(
             'mysql+mysqldb://{}:{}@{}/{}'.format(
@@ -38,7 +40,9 @@ class DBStorage:
         self.drop_tables(HBNB_ENV)
 
     def drop_tables(self, env_test):
-        if env_test == 'test':
+        if env_test != 'test':
+            return
+        try:
             metadata = MetaData()
             metadata.reflect(bind=self.__engine)
 
@@ -46,13 +50,12 @@ class DBStorage:
                 table = Table(
                     table_name, metadata, autoload_with=self.__engine
                 )
-                if condition(table):
-                    table.drop(self.__engine)
-                    print(f"Dropped table: {table_name}")
+                table.drop(self.__engine)
+                print(f"Dropped table: {table_name}")
+        except Excetion as e:
+            print(f"An error occured while dropping tables: {str(e)}")
 
     def all(self, cls=None):
-        session = self.__session
-
         if cls is None:
             table_dict = {}
             metadata = MetaData()
@@ -65,13 +68,18 @@ class DBStorage:
                 query = table.select()
 
                 result.extend(self.__engine.execute(query).fetchall())
-                """print(f"Table: {table_name}")"""
+                print(f"Table: {table_name}")
                 return result
-                """for row in result:
-                    print(row)"""
+                for row in result:
+                    print(row)
         else:
-            cls_obj = session.query(cls).all()
-            return cls_obj
+            session = self.__session
+            cls_orm = eval(args)
+            table = session.query(cls_orm).all()
+            for user in table:
+                print(f"[{user}]")
+            """cls_obj = session.query(cls).all()
+            return cls_obj"""
 
     def new(self, obj):
         session = self.__session()

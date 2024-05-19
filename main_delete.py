@@ -3,18 +3,18 @@
 """
 from models.engine.file_storage import FileStorage
 from models.state import State
-from models.place import Place
+#from models.place import Place
 
 fs = FileStorage()
 
 # Delete the new State
 # All States
-all_states = fs.all(Place)
+all_states = fs.all(State)
 print("All States: {}".format(len(all_states.keys())))
 for state_key in all_states.keys():
     print(all_states[state_key])
 
-"""
+
 # Create a new State
 new_state = State()
 new_state.name = "California"
@@ -48,4 +48,4 @@ fs.delete(new_state)
 all_states = fs.all(State)
 print("All States: {}".format(len(all_states.keys())))
 for state_key in all_states.keys():
-    print(all_states[state_key])"""
+    print(all_states[state_key])

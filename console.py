@@ -13,12 +13,11 @@ from models.amenity import Amenity
 from models.review import Review
 
 
-HBNB_TYPE_STORAGE = os.environ.get('HBNB_TYPE_STORAGE')
+hbnb_storage = os.environ.get('HBNB_TYPE_STORAGE')
 
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
-
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
@@ -216,38 +215,30 @@ class HBNBCommand(cmd.Cmd):
         print("[Usage]: destroy <className> <objectId>\n")
 
     def do_all(self, args):
-        """ Shows all objects, or all objects of a class"""
+        """Shows all objects, or all objects of a class"""
         print_list = []
-        """
-        if HBNB_TYPE_STORAGE == 'db':
-            print(storage)
-            print(storage._DBStorage__session)
-            session = storage._DBStorage__session
-            table = session.query(args).all()
-            print(table)
-
-        else:
-            print(storage)
-            print(storage._FileStorage__objects.items())
-        """
-        if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
+        if not hbnb_storage:
+            if args:
+                args = args.split(' ')[0]  # remove possible trailing args
+                if args not in HBNBCommand.classes:
+                    print("** class doesn't exist **")
+                    return
+                for k, v in storage._FileStorage__objects.items():
+                    if k.split('.')[0] == args:
+                        print_list.append(str(v))
+            else:
+                for k, v in storage._FileStorage__objects.items():
                     print_list.append(str(v))
-        else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
+            print(print_list)
 
-        print(print_list)
-
-    def remove_sa_instance_state(self, dictionary):
-        return {key: value for key, value in dictionary.items()
-                if key != '_sa_instance_state'
-                }
+        if hbnb_storage == 'db':
+            if args:
+                args = args.split(' ')[0]  # remove possible trailing args
+                cls_orm = eval(args)
+                session = storage._DBStorage__session
+                table = session.query(cls_orm).all()
+                for user in table:
+                    print(f"[{user}]")
 
     def help_all(self):
         """ Help information for the all command """

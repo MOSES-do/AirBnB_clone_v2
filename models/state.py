@@ -2,16 +2,28 @@
 """ State Module for HBNB project """
 from models.base_model import BaseModel
 from models.base_model import Base
-from sqlalchemy.orm import Relationship
+from sqlalchemy.orm import relationship
 from sqlalchemy import String, Integer, Column
 
 
-class State(BaseModel):
+class State(BaseModel, Base):
     """ State class """
     name = ""
     
     __tablename__ = "states"
-    cities = Relationship("City", passive_deletes=True, backref="state")
+    """
+    passive_del=true means when a child entity in a relationship btw
+    a parent and child e.g State and city, is deleted the parent entity
+    remains but if the parent entity is deleted all the children entity
+    associated with the parent by reaso of a foreign key are deleted
+    This ensures referential integrity
+    """
+    """
+    Relationship(City) - defines relationship btw State and city entity
+    such that State will have a collection of cities. 
+    A one to many relationship
+    """
+    cities = relationship("City", passive_deletes=True, backref="state")
     name = Column(String(128), nullable=False)
 
     def cities(self):
