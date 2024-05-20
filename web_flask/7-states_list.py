@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """start a flask web application"""
 from flask import Flask, render_template
-from models import *
+from models.state import State
 from models import storage
 app = Flask(__name__)
 
@@ -23,4 +23,4 @@ def close_orm_session(exception):
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5001)
