@@ -6,8 +6,8 @@ from models import storage
 app = Flask(__name__)
 
 
-@app('/states_list', strict_slashes=False)
-def state_list():
+@app.route('/states_list', strict_slashes=False)
+def states_list():
     """render html page with state objects
         sorted by name
     """
