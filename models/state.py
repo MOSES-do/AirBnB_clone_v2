@@ -6,6 +6,9 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import String, Integer, Column
 from models.city import City
 import models
+import os
+
+hbnb_storage = os.environ.get('HBNB_TYPE_STORAGE')
 
 
 class State(BaseModel, Base):
@@ -28,12 +31,13 @@ class State(BaseModel, Base):
     cities = relationship("City", passive_deletes=True, backref="state")
     name = Column(String(128), nullable=False)
 
-    @property
-    def cities(self):
-        """getter attribute"""
-        city_list = []
-        all_cities = models.storage.all(City)
-        for city in all_cities.values():
-            if city.state_id == self.id:
-                city_list.append(city)
-        return city_list
+    if hbnb_storage != 'db':
+        @property
+        def cities(self):
+            """getter attribute"""
+            city_list = []
+            all_cities = models.storage.all(City)
+            for city in all_cities.values():
+                if city.state_id == self.id:
+                    city_list.append(city)
+            return city_list

@@ -16,7 +16,7 @@ class City(BaseModel, Base):
 
     name = Column(String(128), nullable=False)
     """
-    cascade - when a row in the referenced table i s deleted,
+    cascade - when a row in the referenced table is deleted,
     the corresponding row in the current table is also deleted
     """
     state_id = Column(
