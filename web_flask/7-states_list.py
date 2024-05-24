@@ -12,7 +12,7 @@ def states_list():
         sorted by name
     """
     states = storage.all(State).values()
-    sorted_states = sorted(list(states), key=lambda state: state.name)
+    sorted_states = sorted(states, key=lambda state: state.name)
     return render_template('7-states_list.html', states=sorted_states)
 
 
@@ -23,4 +23,4 @@ def close_orm_session(exception):
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5003)
